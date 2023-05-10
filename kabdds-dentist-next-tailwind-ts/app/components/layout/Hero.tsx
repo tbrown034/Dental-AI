@@ -1,5 +1,3 @@
-import React from "react";
-
 type HeroProps = {
   title: string;
   subhead: string;
@@ -9,9 +7,10 @@ type HeroProps = {
 export default function Hero({ title, subhead, imageUrl }: HeroProps) {
   return (
     <div
-      className="min-h-screen hero"
+      className="hero"
       style={{
         backgroundImage: `url(${imageUrl})`,
+        minHeight: "75vh",
       }}
     >
       <div className="hero-overlay bg-opacity-60"></div>
@@ -19,7 +18,7 @@ export default function Hero({ title, subhead, imageUrl }: HeroProps) {
         <div className="max-w-md">
           <h1 className="mb-5 text-5xl font-bold">{title}</h1>
           <p className="mb-5">{subhead}</p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary">Make an Appointment</button>
         </div>
       </div>
     </div>
