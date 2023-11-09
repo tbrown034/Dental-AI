@@ -1,10 +1,37 @@
 body {
   background-color: rgb(41, 41, 171);
   color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 40px;
 }
 
 #countContainer {
   display: flex;
   gap: 5px;
   justify-items: center;
+}
+
+#nameSelector {
+  border: 5px whitesmoke solid;
+  padding: 5px 20px;
+}
+
+#incrementalContainer {
+  border: 5px whitesmoke solid;
+  padding: 5px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#sectionContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+#incrementalButtons {
+  display: flex;
+  gap: 10px;
 }
