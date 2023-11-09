@@ -1,0 +1,10 @@
+body {
+  background-color: rgb(41, 41, 171);
+  color: aliceblue;
+}
+
+#countContainer {
+  display: flex;
+  gap: 5px;
+  justify-items: center;
+}
