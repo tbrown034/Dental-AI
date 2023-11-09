@@ -32,14 +32,36 @@
         </div>
       </div>
       <div id="colorChooser">
-        <p>Choose your colors:</p>
-        <input
-          type="color"
-          id="backgroundColorPicker"
-          title="Background color"
-        />
-        <input type="color" id="textColorPicker" title="Text color" />
-        <button id="applyColorsButton">Apply Colors</button>
+        <p>Choose your colors</p>
+        <div id="colorInputs">
+          <!-- Add labels for clarity -->
+          <label for="backgroundColorPicker">Background Color:</label>
+          <input
+            type="color"
+            id="backgroundColorPicker"
+            title="Background color"
+          />
+
+          <label for="textColorPicker">Text Color:</label>
+          <input type="color" id="textColorPicker" title="Text color" />
+
+          <!-- Adjust the button to align with the inputs -->
+          <button id="applyColorsButton">Apply Colors</button>
+        </div>
+      </div>
+      <div id="todoList">
+        <div>
+          <p>Numbered To-Do List</p>
+          <div id="todoContainer">
+            <input id="newTaskInput" placeholder="Enter new task" />
+            <button id="addTaskButton">Add Task</button>
+          </div>
+          <ol id="numberedTasks"></ol>
+        </div>
+        <div>
+          <p>Completed Tasks</p>
+          <div id="completedTasks"></div>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>

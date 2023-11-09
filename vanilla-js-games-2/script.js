@@ -1,89 +1,103 @@
-// Selectors
-let nameButton = document.getElementById("enterButton");
-let nameInput = document.getElementById("enterName");
-let displayName = document.getElementById("printName");
-let clearButton = document.getElementById("clearButton");
-let upOne = document.getElementById("buttonPlusOne");
-let upTwo = document.getElementById("buttonPlusTwo");
-let downOne = document.getElementById("buttonMinusOne");
-let downTwo = document.getElementById("buttonMinusTwo");
-let countDisplay = document.getElementById("currentCount");
-let clearCounterButton = document.getElementById("buttonCounterClear");
+// ----- Selectors -----
+// Name input and greeting
+const nameButton = document.getElementById("enterButton");
+const nameInput = document.getElementById("enterName");
+const displayName = document.getElementById("printName");
+const clearNameButton = document.getElementById("clearButton");
 
-// Current counter value
-let currentCount = 0;
+// Counter
+const buttonPlusOne = document.getElementById("buttonPlusOne");
+const buttonPlusTwo = document.getElementById("buttonPlusTwo");
+const buttonMinusOne = document.getElementById("buttonMinusOne");
+const buttonMinusTwo = document.getElementById("buttonMinusTwo");
+const countDisplay = document.getElementById("currentCount");
+const buttonCounterClear = document.getElementById("buttonCounterClear");
 
-// Helper functions
+// Color picker
+const backgroundColorPicker = document.getElementById("backgroundColorPicker");
+const textColorPicker = document.getElementById("textColorPicker");
+const applyColorsButton = document.getElementById("applyColorsButton");
+
+// To-do list
+const addTaskButton = document.getElementById("addTaskButton");
+const numberedTasks = document.getElementById("numberedTasks");
+const newTaskInput = document.getElementById("newTaskInput");
+const completedList = document.getElementById("completedTasks");
+
+// ----- State Variables -----
+let currentCount = 0; // for incremental counter
+let taskCounter = 0; // for to do list
+
+// ----- Helper Functions -----
+// Name input and greeting
 function sendName() {
-  const name = nameInput.value;
-  if (name) {
-    displayName.textContent = `Hello, ${name}!`;
-  }
+  const name = nameInput.value.trim();
+  displayName.textContent = name ? `Hello, ${name}!` : "";
 }
-
-function clearField() {
+function clearNameField() {
   displayName.textContent = "";
   nameInput.value = "";
 }
 
-function moveUpOne() {
-  currentCount += 1;
-  updateCountDisplay();
-}
-
-function moveUpTwo() {
-  currentCount += 2;
-  updateCountDisplay();
-}
-
-function moveDownOne() {
-  currentCount -= 1;
-  updateCountDisplay();
-}
-
-function moveDownTwo() {
-  currentCount -= 2;
-  updateCountDisplay();
-}
-
+// Counter
 function updateCountDisplay() {
   countDisplay.textContent = currentCount;
 }
-
+function incrementCount(amount) {
+  currentCount += amount;
+  updateCountDisplay();
+}
 function clearCounter() {
   currentCount = 0;
   updateCountDisplay();
 }
 
-// Event listeners
-nameButton.addEventListener("click", sendName);
-clearButton.addEventListener("click", clearField);
-upOne.addEventListener("click", moveUpOne);
-upTwo.addEventListener("click", moveUpTwo);
-downOne.addEventListener("click", moveDownOne);
-downTwo.addEventListener("click", moveDownTwo);
-clearCounterButton.addEventListener("click", clearCounter);
-
-// Selectors for color picker
-let backgroundColorPicker = document.getElementById("backgroundColorPicker");
-let textColorPicker = document.getElementById("textColorPicker");
-let applyColorsButton = document.getElementById("applyColorsButton");
-
-// Function to change colors
+// Color picker
 function applyColors() {
-  let bgColor = backgroundColorPicker.value;
-  let textColor = textColorPicker.value;
-
-  // Apply the background and text colors
+  const bgColor = backgroundColorPicker.value;
+  const textColor = textColorPicker.value;
   document.body.style.backgroundColor = bgColor;
   document.body.style.color = textColor;
-
-  // Optionally, if you want to change colors of all buttons and inputs as well:
-  document.querySelectorAll("button, input").forEach(function (element) {
+  document.querySelectorAll("button, input").forEach((element) => {
     element.style.backgroundColor = textColor;
     element.style.color = bgColor;
   });
 }
 
-// Event listener for the button
+// numberd tasks
+function addNumberedTask() {
+  const taskDescription = newTaskInput.value.trim(); // Trim the input
+  if (taskDescription) {
+    taskCounter++; // Increment the task counter for the next task ID
+    // Create a new list item for the task with the task counter
+    const newTaskItem = document.createElement("li");
+    newTaskItem.id = "task-" + taskCounter; // Assign a unique ID
+    newTaskItem.textContent = `${taskCounter}. ${taskDescription}`; // Add the counter and description to the text
+    // Create a "Finished" button to move the task to the completed list
+    const finishButton = document.createElement("button");
+    finishButton.textContent = "Finished";
+    finishButton.classList.add("finish-button");
+    finishButton.onclick = function () {
+      // Move the task to the completed list
+      completedList.appendChild(newTaskItem);
+      finishButton.style.display = "none"; // Hide the finish button
+    };
+    // Append the "Finished" button to the task item
+    newTaskItem.appendChild(finishButton);
+    // Add the task item to the numbered tasks list in the DOM
+    numberedTasks.appendChild(newTaskItem);
+    // Clear the input field for the next task
+    newTaskInput.value = "";
+  }
+}
+
+// ----- Event Listeners -----
+nameButton.addEventListener("click", sendName);
+clearNameButton.addEventListener("click", clearNameField);
+buttonPlusOne.addEventListener("click", () => incrementCount(1));
+buttonPlusTwo.addEventListener("click", () => incrementCount(2));
+buttonMinusOne.addEventListener("click", () => incrementCount(-1));
+buttonMinusTwo.addEventListener("click", () => incrementCount(-2));
+buttonCounterClear.addEventListener("click", clearCounter);
 applyColorsButton.addEventListener("click", applyColors);
+addTaskButton.addEventListener("click", addNumberedTask);

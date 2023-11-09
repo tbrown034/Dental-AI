@@ -17,12 +17,21 @@ body {
   padding: 5px 20px;
 }
 
-#incrementalContainer {
+#incrementalContainer,
+#colorChooser {
   border: 5px whitesmoke solid;
   padding: 5px 20px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+#todoList {
+  border: 5px whitesmoke solid;
+  padding: 5px 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 #sectionContainer {
@@ -36,8 +45,18 @@ body {
   gap: 10px;
 }
 
-#colorChooser {
-  border: 5px whitesmoke solid;
-  padding: 5px 20px;
-  margin-top: 20px;
+#newTaskInput {
+  padding: 5px;
+  margin-bottom: 10px; /* Space between the input and the button */
+}
+
+#numberedTasks {
+  list-style-type: decimal; /* This adds numbers to your list items */
+  padding-left: 20px; /* This adds padding to make the numbers visible */
+}
+
+button {
+  background-color: steelblue;
+  padding: 10px;
+  margin: 0px 10px;
 }
