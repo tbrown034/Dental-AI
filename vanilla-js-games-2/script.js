@@ -63,3 +63,27 @@ upTwo.addEventListener("click", moveUpTwo);
 downOne.addEventListener("click", moveDownOne);
 downTwo.addEventListener("click", moveDownTwo);
 clearCounterButton.addEventListener("click", clearCounter);
+
+// Selectors for color picker
+let backgroundColorPicker = document.getElementById("backgroundColorPicker");
+let textColorPicker = document.getElementById("textColorPicker");
+let applyColorsButton = document.getElementById("applyColorsButton");
+
+// Function to change colors
+function applyColors() {
+  let bgColor = backgroundColorPicker.value;
+  let textColor = textColorPicker.value;
+
+  // Apply the background and text colors
+  document.body.style.backgroundColor = bgColor;
+  document.body.style.color = textColor;
+
+  // Optionally, if you want to change colors of all buttons and inputs as well:
+  document.querySelectorAll("button, input").forEach(function (element) {
+    element.style.backgroundColor = textColor;
+    element.style.color = bgColor;
+  });
+}
+
+// Event listener for the button
+applyColorsButton.addEventListener("click", applyColors);

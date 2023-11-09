@@ -35,3 +35,9 @@ body {
   display: flex;
   gap: 10px;
 }
+
+#colorChooser {
+  border: 5px whitesmoke solid;
+  padding: 5px 20px;
+  margin-top: 20px;
+}
