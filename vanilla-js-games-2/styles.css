@@ -12,13 +12,32 @@ body {
   justify-items: center;
 }
 
+#calculatorBody {
+  display: grid;
+  grid-template-columns: repeat(
+    3,
+    1fr
+  ); /* Creates 4 columns, each taking up an equal fraction of the available space */
+  grid-template-rows: repeat(
+    3,
+    1fr
+  ); /* Creates 3 rows, each taking up an equal fraction of the available space */
+  gap: 10px; /* Adds space between the buttons */
+}
+
+.operator {
+  font-size: larger;
+  color: yellow;
+}
+
 #nameSelector {
   border: 5px whitesmoke solid;
   padding: 5px 20px;
 }
 
 #incrementalContainer,
-#colorChooser {
+#colorChooser,
+#calculatorContainer {
   border: 5px whitesmoke solid;
   padding: 5px 20px;
   display: flex;
@@ -59,4 +78,5 @@ button {
   background-color: steelblue;
   padding: 10px;
   margin: 0px 10px;
+  color: whitesmoke;
 }

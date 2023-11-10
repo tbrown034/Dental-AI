@@ -1,11 +1,10 @@
-// ----- Selectors -----
-// Name input and greeting
+// Selectors for name input and greeting
 const nameButton = document.getElementById("enterButton");
 const nameInput = document.getElementById("enterName");
 const displayName = document.getElementById("printName");
 const clearNameButton = document.getElementById("clearButton");
 
-// Counter
+// Selectors for the incremental counter
 const buttonPlusOne = document.getElementById("buttonPlusOne");
 const buttonPlusTwo = document.getElementById("buttonPlusTwo");
 const buttonMinusOne = document.getElementById("buttonMinusOne");
@@ -13,46 +12,57 @@ const buttonMinusTwo = document.getElementById("buttonMinusTwo");
 const countDisplay = document.getElementById("currentCount");
 const buttonCounterClear = document.getElementById("buttonCounterClear");
 
-// Color picker
+// Selectors for the color picker
 const backgroundColorPicker = document.getElementById("backgroundColorPicker");
 const textColorPicker = document.getElementById("textColorPicker");
 const applyColorsButton = document.getElementById("applyColorsButton");
 
-// To-do list
+// Selectors for the to-do list
 const addTaskButton = document.getElementById("addTaskButton");
 const numberedTasks = document.getElementById("numberedTasks");
 const newTaskInput = document.getElementById("newTaskInput");
 const completedList = document.getElementById("completedTasks");
 
-// ----- State Variables -----
-let currentCount = 0; // for incremental counter
-let taskCounter = 0; // for to do list
+// Selectors for the calculator numbers and operators
+const numberButtons = document.querySelectorAll(".calcNumber");
+const operatorButtons = document.querySelectorAll(".operator");
+const calculationDisplay = document.getElementById("calculationDisplay");
+const resultDisplay = document.getElementById("resultDisplay");
 
-// ----- Helper Functions -----
-// Name input and greeting
+// State variables
+let currentCount = 0; // For incremental counter
+let taskCounter = 0; // For to-do list
+let currentInput = ""; // For calculator current input
+let previousInput = ""; // For calculator previous input
+let currentOperation = null; // For calculator current operation
+
+// Helper functions for name input and greeting
 function sendName() {
   const name = nameInput.value.trim();
-  displayName.textContent = name ? `Hello, ${name}!` : "";
+  displayName.textContent = `Hello, ${name}!`;
 }
+
 function clearNameField() {
   displayName.textContent = "";
   nameInput.value = "";
 }
 
-// Counter
+// Helper functions for the counter
 function updateCountDisplay() {
   countDisplay.textContent = currentCount;
 }
+
 function incrementCount(amount) {
   currentCount += amount;
   updateCountDisplay();
 }
+
 function clearCounter() {
   currentCount = 0;
   updateCountDisplay();
 }
 
-// Color picker
+// Helper functions for the color picker
 function applyColors() {
   const bgColor = backgroundColorPicker.value;
   const textColor = textColorPicker.value;
@@ -64,40 +74,111 @@ function applyColors() {
   });
 }
 
-// numberd tasks
+// Helper functions for the numbered tasks
 function addNumberedTask() {
-  const taskDescription = newTaskInput.value.trim(); // Trim the input
+  const taskDescription = newTaskInput.value.trim();
   if (taskDescription) {
-    taskCounter++; // Increment the task counter for the next task ID
-    // Create a new list item for the task with the task counter
+    taskCounter++;
     const newTaskItem = document.createElement("li");
-    newTaskItem.id = "task-" + taskCounter; // Assign a unique ID
-    newTaskItem.textContent = `${taskCounter}. ${taskDescription}`; // Add the counter and description to the text
-    // Create a "Finished" button to move the task to the completed list
+    newTaskItem.id = "task-" + taskCounter;
+    newTaskItem.textContent = `${taskCounter}. ${taskDescription}`;
     const finishButton = document.createElement("button");
     finishButton.textContent = "Finished";
     finishButton.classList.add("finish-button");
     finishButton.onclick = function () {
-      // Move the task to the completed list
       completedList.appendChild(newTaskItem);
-      finishButton.style.display = "none"; // Hide the finish button
+      finishButton.remove(); // Removes the finish button once moved to completed tasks
     };
-    // Append the "Finished" button to the task item
     newTaskItem.appendChild(finishButton);
-    // Add the task item to the numbered tasks list in the DOM
     numberedTasks.appendChild(newTaskItem);
-    // Clear the input field for the next task
     newTaskInput.value = "";
   }
 }
 
-// ----- Event Listeners -----
+// Event listeners for name input and greeting
 nameButton.addEventListener("click", sendName);
 clearNameButton.addEventListener("click", clearNameField);
+
+// Event listeners for the counter
 buttonPlusOne.addEventListener("click", () => incrementCount(1));
 buttonPlusTwo.addEventListener("click", () => incrementCount(2));
 buttonMinusOne.addEventListener("click", () => incrementCount(-1));
 buttonMinusTwo.addEventListener("click", () => incrementCount(-2));
 buttonCounterClear.addEventListener("click", clearCounter);
+
+// Event listener for the color picker
 applyColorsButton.addEventListener("click", applyColors);
+
+// Event listener for the numbered tasks
 addTaskButton.addEventListener("click", addNumberedTask);
+
+// Calculator operations
+function calculate() {
+  const previous = parseFloat(previousInput);
+  const current = parseFloat(currentInput);
+  let result = 0;
+  if (currentOperation === "+") {
+    result = previous + current;
+  } else if (currentOperation === "-") {
+    result = previous - current;
+  } else if (currentOperation === "*") {
+    result = previous * current;
+  } else if (currentOperation === "/") {
+    if (current !== 0) {
+      result = previous / current;
+    } else {
+      result = "Error";
+    }
+  }
+
+  // Update the resultDisplay with the result and reset the calculationDisplay
+  resultDisplay.textContent = `Result: ${result}`;
+  calculationDisplay.textContent = "Calculation:";
+  currentInput = result.toString();
+  previousInput = "";
+  currentOperation = null;
+}
+
+// Update the display as numbers and operations are entered
+function updateCalculationDisplay() {
+  calculationDisplay.textContent = `Calculation: ${previousInput} ${
+    currentOperation || ""
+  } ${currentInput}`;
+}
+
+// Calculator event listeners for numbers
+numberButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    currentInput += button.dataset.value;
+    updateCalculationDisplay();
+  });
+});
+
+// Calculator event listeners for operators
+operatorButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    if (button.dataset.value === "clear") {
+      previousInput = "";
+      currentInput = "";
+      currentOperation = null;
+      calculationDisplay.textContent = "Calculation:";
+      resultDisplay.textContent = "Result:";
+    } else if (button.dataset.value === "=") {
+      if (currentOperation && currentInput && previousInput) {
+        calculate();
+        updateCalculationDisplay();
+      }
+    } else {
+      if (currentInput) {
+        if (previousInput && currentOperation) {
+          calculate();
+        } else {
+          previousInput = currentInput;
+        }
+        currentInput = "";
+        currentOperation = button.dataset.value;
+        updateCalculationDisplay();
+      }
+    }
+  });
+});
