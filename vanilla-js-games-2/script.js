@@ -29,6 +29,11 @@ const operatorButtons = document.querySelectorAll(".operator");
 const calculationDisplay = document.getElementById("calculationDisplay");
 const resultDisplay = document.getElementById("resultDisplay");
 
+// Weather Selectors
+const cityInput = document.getElementById("cityInput");
+const weatherResults = document.getElementById("weatherResults");
+const weatherButton = document.getElementById("enterLocation");
+
 // State variables
 let currentCount = 0; // For incremental counter
 let taskCounter = 0; // For to-do list
@@ -92,6 +97,40 @@ function addNumberedTask() {
     newTaskItem.appendChild(finishButton);
     numberedTasks.appendChild(newTaskItem);
     newTaskInput.value = "";
+  }
+}
+
+// api function for weather
+async function getWeather(cityName) {
+  const apiKey = "f3a6345baae342108e883503230106"; // Replace with your actual API key
+  const baseURL = "http://api.weatherapi.com/v1";
+  const days = 3; // Number of forecast days
+  try {
+    const url = `${baseURL}/forecast.json?key=${apiKey}&q=${cityName}&days=${days}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const forecastData = await response.json();
+    console.log(forecastData); // Inspect the structure in the browser console
+
+    const forecastDays = forecastData.forecast.forecastday;
+    let forecastHtmlContent = "<h2>3-Day Forecast</h2>";
+
+    forecastDays.forEach((day) => {
+      forecastHtmlContent += `
+        <div class="forecast-day">
+          <h3>${new Date(day.date).toLocaleDateString()}</h3>
+          <p>Condition: ${day.day.condition.text}</p>
+          <img src="${day.day.condition.icon}" alt="Weather condition icon">
+        </div>
+      `;
+    });
+
+    weatherResults.innerHTML = forecastHtmlContent;
+  } catch (e) {
+    weatherResults.innerHTML = "<p>Error fetching weather data</p>";
+    console.error("Error during fetch:", e);
   }
 }
 
@@ -181,4 +220,8 @@ operatorButtons.forEach((button) => {
       }
     }
   });
+});
+weatherButton.addEventListener("click", () => {
+  const city = cityInput.value;
+  getWeather(city);
 });
